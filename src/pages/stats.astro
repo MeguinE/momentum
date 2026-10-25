@@ -1,0 +1,14 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StatsPage from "../components/stats/StatsPage";
+---
+
+<BaseLayout title="Estadísticas">
+	<h1 class="text-2xl font-semibold">Estadísticas</h1>
+	<p class="mt-1 text-zinc-500 dark:text-zinc-400">
+		Tu progreso en el tiempo, por hábito.
+	</p>
+	<div class="mt-6">
+		<StatsPage client:only="react" />
+	</div>
+</BaseLayout>

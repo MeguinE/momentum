@@ -1,0 +1,14 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BackupControls from "../components/settings/BackupControls";
+---
+
+<BaseLayout title="Ajustes">
+	<h1 class="text-2xl font-semibold">Ajustes</h1>
+	<p class="mt-1 text-zinc-500 dark:text-zinc-400">
+		Respalda tus datos o restaura uno anterior.
+	</p>
+	<div class="mt-6">
+		<BackupControls client:only="react" />
+	</div>
+</BaseLayout>

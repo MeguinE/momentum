@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SummaryCards from '../components/dashboard/SummaryCards';
+import ContributionHeatmap from '../components/dashboard/ContributionHeatmap';
+import TodayWidget from '../components/habits/TodayWidget';
+import Welcome from '../components/dashboard/Welcome';
+import LearningPaths from '../components/learning/LearningPaths';
+---
+<BaseLayout title="Mi día">
+  <Welcome client:only="react"/>
+  <div class="summary-wrap"><SummaryCards client:only="react"/></div>
+  <section id="today" class="dashboard-section"><div class="section-heading"><div><p class="eyebrow">LA CONSTANCIA EMPIEZA AQUÍ</p><h2>Tus hábitos de hoy</h2></div><a href="/habits" class="text-link">Administrar ↗</a></div><TodayWidget client:only="react"/></section>
+  <section class="dashboard-section"><div class="section-heading"><div><p class="eyebrow">DALE DIRECCIÓN A TU CURIOSIDAD</p><h2>Tres caminos. Tu próximo nivel.</h2></div><a href="/learning" class="text-link">Explorar rutas ↗</a></div><LearningPaths compact client:only="react"/></section>
+  <section class="glass activity-panel dashboard-section"><div class="section-heading"><div><p class="eyebrow">CADA DÍA DEJA HUELLA</p><h2>Así se ve tu constancia</h2></div><a class="text-link" href="/calendar">Ver calendario ↗</a></div><ContributionHeatmap client:only="react"/></section>
+</BaseLayout>
