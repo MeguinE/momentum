@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
-import { beforeEach, afterEach, describe, expect, it } from 'vitest';
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import LearningPaths from './LearningPaths';
 import { $habitData } from '../../lib/stores/habitsStore';
 import { createEmptyData, loadData } from '../../lib/storage/storage';
@@ -22,6 +22,26 @@ describe('guided study plan',()=>{
     expect(within(article).getByRole('button',{name:/Reabrir módulo/})).toBeInTheDocument();
     expect(loadData().learning!.english.notes?.['en-first-words']).toContain('Practiqué');
     expect($habitData.get().logs).toHaveLength(0);
+  });
+  it('guides the next activity without adding habit minutes',()=>{
+    render(<LearningPaths/>);
+    expect(screen.getByRole('link',{name:/TU SIGUIENTE PASO/})).toHaveAttribute('href','#en-first-words-material');
+    fireEvent.click(screen.getByRole('checkbox',{name:/Trabajé el material/}));
+    expect(screen.getByRole('link',{name:/TU SIGUIENTE PASO/})).toHaveAttribute('href','#en-first-words-practice');
+    expect($habitData.get().logs).toHaveLength(0);
+  });
+  it('keeps the syllabus collapsed and closes it after selecting a lesson',()=>{
+    vi.stubGlobal('requestAnimationFrame',()=>0);
+    render(<LearningPaths/>);
+    const summary = screen.getByText(/Ver temario completo/);
+    const details = summary.closest('details')!;
+    expect(details.open).toBe(false);
+    fireEvent.click(summary);
+    expect(details.open).toBe(true);
+    fireEvent.click(screen.getByRole('button',{name:/Sonidos, deletreo y números/}));
+    expect(details.open).toBe(false);
+    expect(screen.getByRole('heading',{name:'Sonidos, deletreo y números'})).toBeInTheDocument();
+    vi.unstubAllGlobals();
   });
   it('opens the path from the URL and keeps notes separate across paths',()=>{
     history.replaceState(null,'','/learning?path=java');
