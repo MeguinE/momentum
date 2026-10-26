@@ -70,3 +70,39 @@ describe("TodayWidget", () => {
     expect(screen.getByText(/racha: 1/i)).toBeInTheDocument();
   });
 });
+
+describe("fast corrections", () => {
+  it("replaces the daily total and can undo without losing the original value", () => {
+    addHabit({name:"Java",unit:"duration",unitLabel:"minutos",dailyGoal:25,color:"progress"});
+    render(<TodayWidget today={TODAY}/>);
+    fireEvent.click(screen.getByRole('button',{name:'+5 a Java'}));
+    fireEvent.click(screen.getByRole('button',{name:'Corregir cantidad de Java'}));
+    fireEvent.change(screen.getByRole('spinbutton',{name:'Total de Java'}),{target:{value:'30'}});
+    fireEvent.click(screen.getByRole('button',{name:'Guardar total'}));
+    expect($habitData.get().logs[0].value).toBe(30);
+    fireEvent.click(screen.getByRole('button',{name:'Deshacer'}));
+    expect($habitData.get().logs[0].value).toBe(5);
+  });
+  it("rejects negative totals and accepts zero to remove a record", () => {
+    addHabit({name:"Leer",unit:"count",dailyGoal:5,color:"progress"});
+    render(<TodayWidget today={TODAY}/>);
+    fireEvent.click(screen.getByRole('button',{name:'+1 a Leer'}));
+    fireEvent.click(screen.getByRole('button',{name:'Corregir cantidad de Leer'}));
+    fireEvent.change(screen.getByRole('spinbutton'),{target:{value:'-1'}});
+    fireEvent.click(screen.getByRole('button',{name:'Guardar total'}));
+    expect(screen.getByRole('alert')).toBeInTheDocument();
+    expect($habitData.get().logs[0].value).toBe(1);
+    fireEvent.change(screen.getByRole('spinbutton'),{target:{value:'0'}});
+    fireEvent.click(screen.getByRole('button',{name:'Guardar total'}));
+    expect($habitData.get().logs).toEqual([]);
+  });
+  it("does not carry correction drafts or undo to another calendar day", () => {
+    addHabit({name:"Leer",unit:"count",dailyGoal:5,color:"progress"});
+    const {rerender}=render(<TodayWidget today={TODAY}/>);
+    fireEvent.click(screen.getByRole('button',{name:'+1 a Leer'}));
+    fireEvent.click(screen.getByRole('button',{name:'Corregir cantidad de Leer'}));
+    rerender(<TodayWidget today={new Date(TODAY.getTime()+86400000)}/>);
+    expect(screen.queryByRole('spinbutton')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button',{name:'Deshacer'})).not.toBeInTheDocument();
+  });
+});

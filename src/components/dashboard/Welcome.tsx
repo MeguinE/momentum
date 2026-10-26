@@ -1,11 +1,13 @@
 import { useStore } from '@nanostores/react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { CheckCircle2, Sprout } from 'lucide-react';
 import { $habitData } from '../../lib/stores/habitsStore';
 import { computeDashboardSummary } from '../../lib/utils/dashboard';
+import { useToday } from '../../lib/hooks/useToday';
 export default function Welcome() {
   const data = useStore($habitData);
-  const today = new Date();
+  const today = useToday();
   const summary = computeDashboardSummary(data.habits, data.logs, today);
+  const remaining = summary.totalActive - summary.completedToday;
   const percent = summary.totalActive ? Math.round(summary.completedToday / summary.totalActive * 100) : 0;
-  return <><div className="page-intro"><div><p className="eyebrow">{today.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' })}</p><h1>Hoy es un buen día<br className="mobile-break"/> para <em>avanzar.</em></h1><p className="muted">Un poco más cerca de la persona que quieres ser.</p></div><a className="secondary-button" href="/habits">+ Nuevo hábito</a></div><section className="hero"><div className="hero-copy"><span className="hero-tag"><Sparkles size={14}/> TU MEJOR INVERSIÓN ERES TÚ</span><h2>Pequeños pasos.<br/>Posibilidades enormes.</h2><p>Aprende una palabra. Escribe una línea de código.<br/>Dale a tu futuro un poquito de tu presente.</p><a href="#today" className="hero-button">Vamos con lo de hoy <ArrowRight size={17}/></a></div><div className="hero-orbit" aria-label={`${percent}% de hábitos completados hoy`}><div className="orbit orbit-one"/><div className="orbit orbit-two"/><span className="orbit-dot dot-one"/><span className="orbit-dot dot-two"/><div className="daily-ring" style={{background: `conic-gradient(#d6f5a1 ${percent}%, #ffffff18 0)`}}><div><span>MI PROGRESO DE HOY</span><strong>{percent}<small>%</small></strong><p>{summary.completedToday} de {summary.totalActive} hábitos</p></div></div><span className="orbit-label label-one">あ · aprender</span><span className="orbit-label label-two">&lt;/&gt; · construir</span></div></section></>;
+  return <><div className="page-intro daily-intro"><div><p className="eyebrow">{today.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' })}</p><h1>Un paso a la <em>vez.</em></h1><p className="muted">{summary.totalActive === 0 ? 'Elige un hábito pequeño para empezar.' : remaining === 0 ? 'Ya cumpliste tus metas de hoy. Disfruta lo que avanzaste.' : 'Elige por dónde empezar. Cada avance cuenta.'}</p></div><a className="secondary-button" href="/habits?new=1">+ Nuevo hábito</a></div><div className="daily-focus"><span className="daily-focus-icon">{remaining===0 && summary.totalActive>0?<CheckCircle2 size={24}/>:<Sprout size={24}/>}</span><div><strong>{summary.totalActive===0?'Tu espacio está listo':`${summary.completedToday} de ${summary.totalActive} hábitos completados`}</strong><p>{remaining>0?`${remaining} ${remaining===1?'pendiente':'pendientes'} · a tu ritmo`:'Un pequeño paso hoy también cuenta.'}</p></div><div className="daily-meter" role="progressbar" aria-label="Hábitos completados hoy" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent}><span style={{width:`${percent}%`}}/></div></div></>;
 }

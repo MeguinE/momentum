@@ -1,3 +1,4 @@
+import { useToday } from '../../lib/hooks/useToday';
 import { useStore } from "@nanostores/react";
 import { $habitData } from "../../lib/stores/habitsStore";
 import { computeDashboardSummary } from "../../lib/utils/dashboard";
@@ -31,7 +32,9 @@ function Card({ label, value }: CardProps) {
  * en vez de limitarse a los números (principio de refuerzo positivo sin
  * culpa, docs/design.md).
  */
-export default function SummaryCards({ today = new Date() }: SummaryCardsProps) {
+export default function SummaryCards({ today: selectedDate }: SummaryCardsProps) {
+  const currentDate = useToday();
+  const today = selectedDate ?? currentDate;
   const data = useStore($habitData);
   const summary = computeDashboardSummary(data.habits, data.logs, today);
   const allDoneToday = summary.totalActive > 0 && summary.completedToday === summary.totalActive;
@@ -41,7 +44,7 @@ export default function SummaryCards({ today = new Date() }: SummaryCardsProps) 
       {allDoneToday && (
         <div
           role="status"
-          className="animate-bounce rounded-xl bg-habit-success-light/20 p-4 text-center font-medium text-habit-success-light dark:bg-habit-success-dark/20 dark:text-habit-success-dark"
+          className="rounded-xl bg-habit-success-light/20 p-4 text-center font-medium text-habit-success-light dark:bg-habit-success-dark/20 dark:text-habit-success-dark"
         >
           ¡Completaste todos tus hábitos de hoy! 🎉
         </div>

@@ -9,7 +9,7 @@ import HabitIcon from './HabitIcon';
 export default function HabitList() {
   const data = useStore($habitData);
   const saveError = useStore($saveError);
-  const [mode,setMode] = useState<'hidden'|'create'|{editing:string}>('hidden');
+  const [mode,setMode] = useState<'hidden'|'create'|{editing:string}>(() => typeof location !== 'undefined' && new URLSearchParams(location.search).get('new') === '1' ? 'create' : 'hidden');
   const [notice,setNotice] = useState('');
   function submit(value:NewHabitInput) {
     if(typeof mode==='object') updateHabit(mode.editing,value);
