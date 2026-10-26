@@ -40,6 +40,7 @@ interface HabitFormProps {
  */
 export default function HabitForm({ initialValue, onSubmit, onCancel }: HabitFormProps) {
   const nameInput = useRef<HTMLInputElement>(null);
+  const goalInput = useRef<HTMLInputElement>(null);
   useEffect(() => { nameInput.current?.focus(); }, []);
   const [icon, setIcon] = useState(initialValue?.icon ?? '');
   const [goalError, setGoalError] = useState<string | null>(null);
@@ -67,11 +68,13 @@ export default function HabitForm({ initialValue, onSubmit, onCancel }: HabitFor
 
     if (name.trim() === "") {
       setNameError("El nombre es obligatorio.");
+      nameInput.current?.focus();
       return;
     }
 
     if (needsQuantity && dailyGoal !== '' && (!Number.isFinite(Number(dailyGoal)) || Number(dailyGoal) < 1 || !Number.isInteger(Number(dailyGoal)))) {
       setGoalError('La meta debe ser un número entero mayor que cero.');
+      goalInput.current?.focus();
       return;
     }
     const value: NewHabitInput = {
@@ -97,6 +100,8 @@ export default function HabitForm({ initialValue, onSubmit, onCancel }: HabitFor
         <input
           ref={nameInput}
           id={nameId}
+          aria-invalid={!!nameError}
+          aria-describedby={nameError ? `${nameId}-error` : undefined}
           type="text"
           value={name}
           onChange={(event) => {
@@ -106,7 +111,7 @@ export default function HabitForm({ initialValue, onSubmit, onCancel }: HabitFor
           className="mt-1 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 dark:border-zinc-600 dark:bg-zinc-800"
         />
         {nameError && (
-          <p role="alert" className="mt-1 text-sm text-red-600 dark:text-red-400">
+          <p id={`${nameId}-error`} role="alert" className="mt-1 text-sm text-red-600 dark:text-red-400">
             {nameError}
           </p>
         )}
@@ -158,6 +163,10 @@ export default function HabitForm({ initialValue, onSubmit, onCancel }: HabitFor
             </label>
             <input
               id={dailyGoalId}
+              ref={goalInput}
+              aria-invalid={!!goalError}
+              aria-describedby={`${dailyGoalId}-help`}
+              placeholder="1"
               type="number"
               min={1}
               value={dailyGoal}
@@ -168,7 +177,8 @@ export default function HabitForm({ initialValue, onSubmit, onCancel }: HabitFor
         </>
       )}
 
-      {goalError && <p role="alert" className="text-sm text-red-600">{goalError}</p>}
+      <p id={`${dailyGoalId}-help`} role={goalError ? "alert" : undefined} className="form-hint">{goalError || (needsQuantity ? "Si dejas la meta vacía, se considera 1 al día." : "")}</p>
+      <details className="habit-personalization"><summary>Personalizar icono, color y motivación</summary><div className="space-y-4">
       <fieldset className="icon-picker"><legend>Icono del hábito</legend><div><button type="button" aria-pressed={icon===''} onClick={()=>setIcon('')}>Auto</button>{habitIcons.map(option=><button key={option.id} type="button" aria-label={`Icono: ${option.label}`} title={option.label} aria-pressed={icon===option.id} onClick={()=>setIcon(option.id)}><option.icon size={20}/></button>)}</div></fieldset>
       <div>
         <label htmlFor={colorId} className="block text-sm font-medium">
@@ -201,7 +211,8 @@ export default function HabitForm({ initialValue, onSubmit, onCancel }: HabitFor
         />
       </div>
 
-      <div className="flex gap-2">
+      </div></details>
+      <div className="flex gap-2 habit-form-actions">
         <button
           type="submit"
           className="rounded-lg bg-habit-progress-light px-4 py-2 font-medium text-white hover:opacity-90 dark:bg-habit-progress-dark"

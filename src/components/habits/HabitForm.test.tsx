@@ -43,6 +43,7 @@ describe("HabitForm", () => {
       target: { value: "páginas" },
     });
     fireEvent.change(screen.getByLabelText(/meta diaria/i), { target: { value: "10" } });
+    fireEvent.click(screen.getByText("Personalizar icono, color y motivación"));
     fireEvent.change(screen.getByLabelText(/por qué/i), {
       target: { value: "quiero ser alguien que lee" },
     });

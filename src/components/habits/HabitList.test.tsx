@@ -6,6 +6,7 @@ import { $habitData, addHabit } from "../../lib/stores/habitsStore";
 import HabitList from "./HabitList";
 
 beforeEach(() => {
+  history.replaceState(null, '', '/habits');
   localStorage.clear();
   $habitData.set(createEmptyData());
 });
@@ -95,6 +96,32 @@ describe("HabitList", () => {
 });
 
 describe("editing regressions", () => {
+  it("opens creation from the dashboard and removes the query when cancelled", () => {
+    history.replaceState(null, '', '/habits?new=1');
+    render(<HabitList/>);
+    expect(screen.getByRole('region',{name:'Crear hábito'})).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'Cancelar'}));
+    expect(location.search).toBe('');
+  });
+  it("retries a failed save without duplicating the new habit", () => {
+    const failure = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(()=>{throw new Error('storage unavailable');});
+    render(<HabitList/>);
+    createHabit('Lectura');
+    expect(screen.getByRole('alert')).toBeInTheDocument();
+    expect($habitData.get().habits).toHaveLength(1);
+    failure.mockRestore();
+    fireEvent.click(screen.getByRole('button',{name:'Guardar'}));
+    expect(loadData().habits).toHaveLength(1);
+    expect(screen.getByRole('status')).toHaveTextContent('Cambios guardados');
+  });
+  it("returns keyboard focus to the edit button after cancelling", () => {
+    addHabit({name:'Lectura',unit:'boolean',color:'progress'});
+    render(<HabitList/>);
+    const edit = screen.getByRole('button',{name:'Editar Lectura'});
+    fireEvent.click(edit);
+    fireEvent.click(screen.getByRole('button',{name:'Cancelar'}));
+    expect(edit).toHaveFocus();
+  });
   it("opens the editor inside the selected card and switches values between habits", () => {
     addHabit({name:"Inglés",unit:"duration",dailyGoal:15,unitLabel:"minutos",color:"progress"});
     addHabit({name:"Movimiento",unit:"duration",dailyGoal:20,unitLabel:"minutos",color:"success"});
@@ -115,6 +142,7 @@ describe("editing regressions", () => {
     $habitData.set({...$habitData.get(),logs:[{habitId:habit.id,date:"2026-10-25",value:5}]});
     render(<HabitList/>);
     fireEvent.click(screen.getByRole("button",{name:"Editar Lectura"}));
+    fireEvent.click(screen.getByText("Personalizar icono, color y motivación"));
     fireEvent.change(screen.getByLabelText(/por qué/i),{target:{value:""}});
     fireEvent.change(screen.getByLabelText(/cómo quieres registrarlo/i),{target:{value:"boolean"}});
     fireEvent.click(screen.getByRole("button",{name:"Icono: Bienestar"}));

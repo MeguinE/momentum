@@ -119,3 +119,9 @@ main { max-width:1390px; margin:auto; padding:38px 43px 25px; animation:arrive .
 .curriculum-layout { grid-template-columns:minmax(0,1fr); }.curriculum-picker { padding:5px 18px; border-radius:12px; }.curriculum-index { max-height:360px; overflow:auto; }
 .lesson-next-action { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:15px; margin-top:18px; border-radius:10px; background:var(--soft); color:var(--accent); font-size:13px; }.lesson-next-action small { display:block; font-size:9px; letter-spacing:1px; margin-bottom:4px; }.lesson-section { scroll-margin-top:24px; }
 @media(max-width:600px) { .path-switcher { gap:6px; }.path-choice { flex-direction:column; align-items:flex-start; gap:6px; padding:10px; }.path-choice .path-symbol { width:30px; height:30px; font-size:18px; }.path-choice strong { font-size:14px; }.path-choice small { font-size:9px; }.study-plan { margin-top:16px; } }
+
+/* Short primary form, optional customization and reachable actions. */
+.habit-personalization { border-top:1px solid var(--line); padding-top:10px; }.habit-personalization summary { cursor:pointer; color:var(--accent); font-size:13px; padding:10px 0; }.habit-personalization>div { padding-top:12px; }
+.form-hint { color:var(--muted); font-size:12px; }.form-hint[role=alert] { color:#b54532; }.habit-form [aria-invalid=true] { outline:2px solid #b54532; outline-offset:2px; }
+.habit-form-actions { position:sticky; bottom:10px; z-index:2; background:var(--panel); border:1px solid var(--line); padding:10px; border-radius:10px; box-shadow:0 4px 18px #00000010; }.habit-form-actions button { min-height:44px; }
+@media(max-width:600px) { .habit-form-actions button { flex:1; justify-content:center; } }
