@@ -43,7 +43,7 @@ export default function BackupControls() {
         setError(result.error);
       } else {
         const confirmed = window.confirm(
-          "Esto reemplaza todos tus hábitos y tu historial actual con los del archivo. ¿Continuar?",
+          "Esto reemplaza todos tus hábitos y tu historial actual con los del archivo. Si tienes sesión iniciada, también se sincronizará con tu cuenta y tus otros dispositivos. ¿Continuar?",
         );
         if (confirmed) {
           replaceAllData(result.data);

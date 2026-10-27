@@ -1,6 +1,7 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-const url = import.meta.env.PUBLIC_SUPABASE_URL;
-const key = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+import { cloudProject } from './project';
+const url = import.meta.env.PUBLIC_SUPABASE_URL || cloudProject.url;
+const key = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY || cloudProject.publishableKey;
 export const cloudConfigured = Boolean(url && key);
 let client: SupabaseClient | null = null;
 export function getCloudClient() {

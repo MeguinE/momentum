@@ -21,9 +21,14 @@ export const $habitData = atom<HabitTrackerData>(getInitialData());
  * esto para mostrar un aviso (ej. "no se pudo guardar"). */
 export const $saveError = atom<string | null>(null);
 
+export const $dataReady = atom(true);
+let writeData = saveData;
+export function setDataWriter(writer: typeof saveData) { writeData = writer; }
+
 function persist(data: HabitTrackerData): void {
+  if (!$dataReady.get()) return;
   $habitData.set(data);
-  const result = saveData(data);
+  const result = writeData(data);
   $saveError.set(result.ok ? null : result.error);
 }
 
