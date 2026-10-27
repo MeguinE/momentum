@@ -12,6 +12,7 @@ let userId: string | null = null;
 let cache: Cache | null = null;
 let generation = 0;
 let started = false;
+let accountInitialized = false;
 let syncing = false;
 let timer: ReturnType<typeof setTimeout> | undefined;
 let releaseLock: (() => void) | undefined;
@@ -20,6 +21,19 @@ let guest = loadData();
 
 function state(phase: Phase, message?: string) {
   $cloud.set({...$cloud.get(),phase,message});
+}
+function releaseAccountLock() {
+  clearTimeout(timer);
+  releaseLock?.();
+  releaseLock = undefined;
+}
+function suspendAccount() {
+  if (!userId) return;
+  generation++;
+  releaseAccountLock();
+  syncing = false;
+  $dataReady.set(false);
+  state('loading');
 }
 function checkpoint() {
   if (!userId || !cache) return;
@@ -60,15 +74,21 @@ export function startCloud() {
     window.addEventListener('beforeunload', e => {
       if ($saveError.get()) { e.preventDefault(); }
     });
+    // Hand the account lock to the next document during normal Astro navigation.
+    // A page restored from the back-forward cache must acquire it again.
+    window.addEventListener('pagehide', suspendAccount);
+    window.addEventListener('pageshow', event => {
+      if (!event.persisted || !userId) return;
+      accountInitialized = false;
+      void switchAccount(userId,$cloud.get().email);
+    });
   } catch { state('error','Revisa la configuración pública de Supabase.'); }
 }
-let accountInitialized = false;
 async function switchAccount(id: string | null, email?: string) {
   if (accountInitialized && id === userId) return;
   accountInitialized = true;
   const epoch = ++generation;
-  clearTimeout(timer);
-  releaseLock?.(); releaseLock = undefined;
+  releaseAccountLock();
   $dataReady.set(false);
   userId = id; cache = null; conflictRemote = null; syncing = false;
   $cloud.set({phase:'loading',email});
