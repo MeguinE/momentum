@@ -4,95 +4,105 @@
 
 **Pequeños pasos. Grandes cambios.**
 
-Un espacio personal para construir hábitos, aprender de forma guiada y
-cuidar rutinas de bienestar — todo en tu navegador, sin cuentas ni
-servidores.
+Un espacio personal para construir hábitos, aprender inglés, japonés y Java,
+y continuar con el mismo progreso desde tu celular y tu laptop.
+
+[Usar Momentum](https://momentum-blond-tau.vercel.app) · [Mi perfil](https://momentum-blond-tau.vercel.app/profile)
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-397257.svg)](./LICENSE)
 [![Astro](https://img.shields.io/badge/Astro-7-ff5d01.svg?logo=astro&logoColor=white)](https://astro.build)
 [![React](https://img.shields.io/badge/React-19-61dafb.svg?logo=react&logoColor=white)](https://react.dev)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8.svg?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![Tests](https://img.shields.io/badge/tests-vitest-6e9f18.svg?logo=vitest&logoColor=white)](https://vitest.dev)
-
-![Dashboard de Momentum](./docs/screenshots/dashboard.png)
+[![Supabase](https://img.shields.io/badge/Supabase-Auth_y_Postgres-3ecf8e.svg?logo=supabase&logoColor=white)](https://supabase.com)
 
 </div>
 
----
+## Qué incluye
 
-## ✨ Qué incluye
+- **Mi día:** hábitos visibles, progreso diario, registro rápido, corrección del total y deshacer el último cambio.
+- **Hábitos personalizados:** marcar como hecho, contar cantidades o registrar minutos. Metas, iconos, colores y motivación editables.
+- **Aprendizaje guiado:** rutas de inglés, japonés y Java con explicaciones, materiales, prácticas, repasos y evidencia. Temario desplegable y acceso al siguiente paso pendiente.
+- **Bienestar:** hábitos iniciales de higiene personal, cepillado y movimiento, con metas ajustables.
+- **Calendario y estadísticas:** historial, rachas, cumplimiento y mapa de actividad.
+- **Mi perfil:** identidad de la cuenta, resumen del progreso, carga y sincronización, cierre de sesión y respaldos.
+- **Diseño adaptable:** móvil y escritorio, modo claro/oscuro y respeto a la preferencia de movimiento reducido.
 
-- **Hábitos personalizados** — binarios (sí/no), de cantidad o de
-  duración, con meta diaria y un "por qué" opcional que ancla el hábito a
-  una identidad.
-- **Dashboard diario** con registro de un tap, tarjetas resumen y un
-  heatmap de contribuciones estilo GitHub para ver tu constancia de un
-  vistazo.
-- **Calendario mensual** para revisar tu historial y corregir un día que
-  se te pasó.
-- **Estadísticas** con tendencia de cumplimiento, totales semanales y
-  racha actual/mejor racha por hábito.
-- **Aprendizaje guiado** — tres rutas con lecciones, material, práctica y
-  evidencia auto-reportada (inglés, japonés, Java). Nunca asigna un nivel
-  automáticamente: el progreso lo documentas tú.
-- **Hábitos de bienestar** activados por defecto (higiene, movimiento)
-  como punto de partida razonable.
-- **Modo claro/oscuro** persistido, con transición animada.
-- **Exportar/importar** un respaldo completo en JSON desde `/settings`.
+Completar módulos documenta tu autoevaluación; no certifica un nivel ni suma minutos automáticamente a los hábitos.
 
-Todo el diseño sigue principios de psicología del comportamiento: rachas
-visibles, refuerzo positivo sin culpa (nunca rojo para un día no
-cumplido) y fricción mínima para registrar un hábito. Ver
-[`docs/design.md`](./docs/design.md) para el detalle completo.
+## Vincular celular y laptop
 
-## 🧱 Stack
+1. Abre **Mi perfil** desde el avatar de la barra superior o el acceso de la barra lateral.
+2. En el navegador que contiene tu progreso actual, escribe tu correo y abre el enlace recibido en ese mismo navegador.
+3. Si tu cuenta aún está vacía, elige **Vincular mi progreso actual**.
+4. En el otro dispositivo, entra con **el mismo correo**.
+5. Usa **Cargar y sincronizar** para recuperar avances de la nube y enviar cambios pendientes. La sincronización también ocurre automáticamente.
 
-| | |
-|---|---|
-| **Framework** | [Astro](https://astro.build) (salida estática) + islas de [React 19](https://react.dev) |
-| **Estilos** | [Tailwind CSS v4](https://tailwindcss.com) |
-| **Estado** | [nanostores](https://github.com/nanostores/nanostores), compartido entre islas |
-| **Fechas** | [date-fns](https://date-fns.org) |
-| **Gráficas** | [recharts](https://recharts.org) |
-| **Íconos** | [lucide-react](https://lucide.dev) |
-| **Tests** | [Vitest](https://vitest.dev) + React Testing Library |
-| **Persistencia** | `localStorage` del navegador, sin backend |
+El indicador superior muestra si estás en modo local, sincronizando, sin conexión o al día. Espera **Sincronizado** antes de cerrar si acabas de registrar algo.
 
-## 🚀 Empezar
+Sin iniciar sesión puedes seguir usando la app en modo local. Entrar en una cuenta existente carga sus datos; no combina automáticamente los registros locales de un segundo dispositivo. Si ambos tienen progreso diferente, exporta sus respaldos primero.
+
+## Datos y privacidad
+
+- **Sin sesión:** el progreso se guarda en el navegador.
+- **Con sesión:** hábitos, registros y notas/marcas de aprendizaje se guardan en tu cuenta de Supabase, con una copia local para cambios pendientes.
+- Las lecturas están protegidas por **Row Level Security**. Las escrituras verifican la identidad autenticada y una revisión atómica.
+- Los cambios independientes se combinan. Si dos dispositivos cambian el mismo registro de forma incompatible, se solicita elegir una versión y se conservan copias de ambas.
+- Una pestaña por cuenta y navegador puede editar a la vez. Celular y laptop sí pueden usarse simultáneamente.
+- El modo sin conexión permite trabajar en una página ya abierta. La app no garantiza abrirse desde cero sin internet.
+- Cerrar sesión vuelve al progreso local original. No se permite hacerlo con cambios pendientes de enviar.
+- El tema visual es propio de cada navegador. Las evidencias son texto; no se suben archivos adjuntos.
+
+Puedes exportar/importar JSON desde **Mi perfil** o **Ajustes**. Importar reemplaza los datos actuales y, si tienes sesión, ese reemplazo se sincroniza también con los otros dispositivos.
+
+## Desarrollo local
+
+Requiere **Node.js 22.23.4 o posterior** y npm.
 
 ```sh
-npm install
-npm run dev          # http://localhost:4321
+npm ci
+npm run dev
 ```
 
-| Comando | Qué hace |
+| Comando | Función |
 |---|---|
-| `npm run dev` | Servidor de desarrollo |
-| `npm run build` | Build de producción en `./dist/` |
-| `npm run preview` | Sirve el build localmente |
-| `npm run test` | Corre la suite de Vitest |
-| `npm run astro check` | Chequeo de tipos de Astro/TypeScript |
+| `npm run dev` | Servidor local en el puerto 4321 |
+| `npm run build` | Compilar en `dist/` |
+| `npm run preview` | Revisar la compilación local |
+| `npm test` | Pruebas de componentes, datos, sincronización y permisos SQL |
+| `npx astro check` | Comprobar tipos de Astro y TypeScript |
 
-## ☁️ Desplegar
+## Supabase y despliegue
 
-Es un sitio 100% estático (`output: "static"`), sin variables de entorno
-ni backend. Vercel y Netlify detectan Astro automáticamente:
+El frontend es estático y se despliega en **Vercel**. **Supabase Auth y PostgreSQL** proporcionan las cuentas y la persistencia compartida.
 
-| Ajuste | Valor |
+Este repositorio incluye en `src/lib/cloud/project.ts` la URL y la clave **publishable** del proyecto de Momentum. Son configuración pública del navegador, no credenciales administrativas. Si haces un fork, configura tu propio proyecto antes de utilizarlo.
+
+Para conectar otro proyecto:
+
+1. Copia `.env.example` a `.env.local` y completa **ambas** variables:
+   - `PUBLIC_SUPABASE_URL`
+   - `PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+2. Inicia sesión con `npx supabase login` y vincula tu proyecto con `npx supabase link --project-ref TU_REFERENCIA`.
+3. Aplica la migración con `npx supabase db push --linked`.
+4. Ajusta las URL de tu despliegue y de `/profile` en `supabase/config.toml`. Revisa con `npx supabase config diff` antes de ejecutar `npx supabase config push`.
+5. Configura esas dos variables públicas también en Vercel y vuelve a desplegar.
+
+Nunca uses una clave `service_role`, `sb_secret_` o un token de la CLI en variables `PUBLIC_` ni en archivos versionados.
+
+| Ajuste en Vercel | Valor |
 |---|---|
+| Framework | Astro |
 | Build command | `npm run build` |
 | Output directory | `dist` |
 
-Conecta este repositorio desde el dashboard de la plataforma, o usa su
-CLI (`vercel` / `netlify deploy`) desde la raíz del proyecto.
+El correo de acceso depende de Supabase. Su servicio predeterminado tiene restricciones; para usuarios fuera del equipo del proyecto configura SMTP propio.
 
-## 🔒 Datos y privacidad
+## Stack y documentación
 
-No hay servidor ni analítica: todo vive en el `localStorage` de tu
-navegador. Desde `/settings` puedes exportar un respaldo en JSON y
-volver a importarlo — útil si cambias de navegador, limpias el caché por
-accidente, o quieres migrar tus datos.
+Astro + React + TypeScript, Tailwind CSS, nanostores, date-fns, Recharts, Lucide y Supabase. Pruebas con Vitest, React Testing Library y PostgreSQL local mediante PGlite.
 
-## 📄 Licencia
+- [Configuración y funcionamiento de Supabase](./docs/supabase.md)
+- [Diseño del sistema](./docs/design.md)
+
+## Licencia
 
 [MIT](./LICENSE) © Guillermo Díaz Ramos

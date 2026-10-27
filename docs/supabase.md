@@ -4,11 +4,11 @@ Proyecto conectado: `vmqyundwumsvsvynvsva`.
 Aplicación: https://momentum-blond-tau.vercel.app
 
 ## Usarlo
-1. En el navegador donde tienes tu progreso actual, abre Ajustes → Cuenta y sincronización.
+1. En el navegador donde tienes tu progreso actual, abre Mi perfil → Cuenta y sincronización.
 2. Escribe tu correo y abre el enlace recibido en ese mismo navegador.
 3. Si la cuenta está vacía, elige **Vincular mi progreso actual**.
-4. En el otro dispositivo, entra con el mismo correo. Cargará el progreso de la cuenta.
-5. Espera el indicador **Sincronizado** antes de cerrar cuando acabes de registrar algo.
+4. En el otro dispositivo, abre Mi perfil y entra con el mismo correo. Cargará el progreso de la cuenta.
+5. Puedes usar **Cargar y sincronizar** desde Mi perfil para recuperar y enviar avances. Espera el indicador **Sincronizado** antes de cerrar cuando acabes de registrar algo.
 
 La copia local original se conserva. Iniciar sesión en una cuenta existente carga los datos de esa cuenta; no mezcla automáticamente los hábitos base de un dispositivo nuevo. Si ya tenías progreso distinto en dos dispositivos, exporta ambos respaldos antes de vincularlos. Importar un respaldo en una sesión abierta reemplaza el documento de la cuenta y se sincroniza.
 
