@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProfileOverview from '../components/cloud/ProfileOverview';
+import AccountPanel from '../components/cloud/AccountPanel';
+import BackupControls from '../components/settings/BackupControls';
+---
+<BaseLayout title="Mi perfil">
+  <div class="page-intro"><div><p class="eyebrow">TU CUENTA, TU PROGRESO</p><h1>Mi perfil</h1><p class="muted">Carga tus avances, sincroniza tus dispositivos y conserva una copia.</p></div></div>
+  <ProfileOverview client:only="react"/>
+  <AccountPanel client:only="react"/>
+  <BackupControls client:only="react"/>
+</BaseLayout>

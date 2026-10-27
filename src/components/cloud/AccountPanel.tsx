@@ -12,7 +12,7 @@ export default function AccountPanel() {
   async function login(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setError(''); setMessage('');
     try {
-      const {error} = await getCloudClient()!.auth.signInWithOtp({email:email.trim(),options:{emailRedirectTo:location.origin+'/settings'}});
+      const {error} = await getCloudClient()!.auth.signInWithOtp({email:email.trim(),options:{emailRedirectTo:location.origin+'/profile'}});
       if(error) throw error;
       setMessage('Revisa tu correo y abre el enlace en este dispositivo. Usa el mismo correo en tu celular y tu laptop.');
     } catch { setError('No se pudo enviar el enlace. Verifica el correo, espera un minuto y vuelve a intentarlo.'); }
@@ -29,10 +29,10 @@ export default function AccountPanel() {
     {!cloudConfigured ? <p>La conexión a Supabase aún no está configurada. Tus hábitos siguen guardándose en este navegador.</p>
     : state.email ? <>
       <p>Sesión iniciada como <strong>{state.email}</strong></p>
-      <p role="status">{state.phase==='ready'?'Tu progreso está sincronizado.':state.message ?? 'Guardando y comprobando cambios…'}</p>
+      <p role="status">{state.phase==='ready'?'Tu progreso está sincronizado.':state.message ?? (state.phase==='pending'?'Tienes cambios pendientes de enviar.':'Guardando y comprobando cambios…')}</p>
       {state.lastSync && <p className="muted">Última sincronización: {new Date(state.lastSync).toLocaleTimeString('es-MX')}</p>}
-      <p>Se sincronizan hábitos, registros y avances de aprendizaje. Si pierdes conexión, los cambios quedan pendientes en este navegador y se envían al volver.</p>
-      <div className="account-actions"><button onClick={()=>void synchronize()} disabled={busy || state.phase==='syncing'}><RefreshCw size={16}/> Sincronizar ahora</button><button className="secondary" onClick={logout} disabled={busy}><LogOut size={16}/> Cerrar sesión</button></div>
+      <p>Al cargar se recuperan los avances de la nube y se envían los cambios pendientes de este dispositivo. Si pierdes conexión, los cambios quedan pendientes en este navegador y se envían al volver.</p>
+      <div className="account-actions"><button onClick={()=>void synchronize()} disabled={busy || state.phase==='syncing'}><RefreshCw size={16}/> Cargar y sincronizar</button><button className="secondary" onClick={logout} disabled={busy}><LogOut size={16}/> Cerrar sesión</button></div>
       <p className="muted">Cerrar sesión vuelve al progreso local original de este navegador.</p>
     </> : <>
       <p>Usa el mismo correo en tus dispositivos para continuar con los mismos hábitos y avances. Recibirás un enlace para entrar, sin contraseña.</p>

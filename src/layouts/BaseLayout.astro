@@ -1,4 +1,5 @@
 ---
+import ProfileLink from '../components/cloud/ProfileLink';
 import CloudStatus from '../components/cloud/CloudStatus';
 import ThemeToggle from '../components/ui/ThemeToggle';
 import LearningInit from '../components/learning/LearningInit';
@@ -32,8 +33,8 @@ const items = [
     <a href="/" class="brand"><span class="brand-icon"><Sprout size={25}/></span><span>momentum<span class="brand-dot">.</span><small>PEQUEÑOS PASOS. GRANDES CAMBIOS.</small></span></a>
     <p class="nav-caption">TU ESPACIO</p>
     <nav aria-label="Principal"><ul>{items.map(item => <li><a href={item.href} aria-current={Astro.url.pathname.replace(/\/$/, '') === item.href.replace(/\/$/, '') ? 'page' : undefined}><item.icon size={19}/><span>{item.label}</span>{item.href === '/learning' && <span class="new-badge">3</span>}</a></li>)}</ul></nav>
-    <div class="sidebar-bottom"><div class="growth-note"><Sprout size={26}/><p>No necesitas hacerlo perfecto.</p><strong>Solo dar el siguiente paso.</strong><a href="/learning">Encuentra tu siguiente paso <ArrowUpRight size={15}/></a></div><div class="profile"><span>G</span><div><strong>Mi espacio personal</strong><small>Construyendo mi mejor versión</small></div></div></div>
+    <div class="sidebar-bottom"><div class="growth-note"><Sprout size={26}/><p>No necesitas hacerlo perfecto.</p><strong>Solo dar el siguiente paso.</strong><a href="/learning">Encuentra tu siguiente paso <ArrowUpRight size={15}/></a></div><ProfileLink client:only="react"/></div>
   </aside>
-  <div class="workspace"><header class="topbar"><span>Mi espacio <span class="breadcrumb">/</span> <strong>{title}</strong></span><div class="topbar-actions"><CloudStatus client:only="react"/><ThemeToggle client:only="react"/></div></header><main id="main"><LearningInit client:only="react"/><slot /></main><footer class="app-footer">Cada pequeño avance cuenta. <span>Hecho para tu ritmo.</span></footer></div>
+  <div class="workspace"><header class="topbar"><span>Mi espacio <span class="breadcrumb">/</span> <strong>{title}</strong></span><div class="topbar-actions"><CloudStatus client:only="react"/><ProfileLink compact client:only="react"/><ThemeToggle client:only="react"/></div></header><main id="main"><LearningInit client:only="react"/><slot /></main><footer class="app-footer">Cada pequeño avance cuenta. <span>Hecho para tu ritmo.</span></footer></div>
 </body>
 </html>

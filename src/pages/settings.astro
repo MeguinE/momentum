@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import AccountPanel from "../components/cloud/AccountPanel";
 import BackupControls from "../components/settings/BackupControls";
 ---
 
@@ -10,7 +9,7 @@ import BackupControls from "../components/settings/BackupControls";
 		Vincula tus dispositivos y conserva un respaldo de tu progreso.
 	</p>
 	<div class="mt-6">
-		<AccountPanel client:only="react" />
+		<a class="profile-settings-link glass" href="/profile"><strong>Mi perfil y sincronización →</strong><span>Entra a tu cuenta, carga tu progreso y conecta tus dispositivos.</span></a>
 		<BackupControls client:only="react" />
 	</div>
 </BaseLayout>

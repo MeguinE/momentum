@@ -15,7 +15,7 @@ export default function CloudStatus() {
     return () => background.forEach(element => { element.inert = false; });
   },[ready,state.phase]);
   return <>
-    <a className="cloud-badge" href="/settings#account" title={state.message ?? labels[state.phase]}>{state.phase==='offline'?<CloudOff size={15}/>:<Cloud size={15}/>}<span>{labels[state.phase]}</span></a>
+    <a className="cloud-badge" href="/profile#account" title={state.message ?? labels[state.phase]}>{state.phase==='offline'?<CloudOff size={15}/>:<Cloud size={15}/>}<span>{labels[state.phase]}</span></a>
     {!ready && <div className="cloud-overlay"><section ref={dialog} tabIndex={-1} onKeyDown={event=>{ if(event.key!=='Tab')return; const buttons=dialog.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)'); if(!buttons?.length)return; const first=buttons[0],last=buttons[buttons.length-1]; if(event.shiftKey && (document.activeElement===first || document.activeElement===dialog.current)){event.preventDefault();last.focus();}else if(!event.shiftKey && document.activeElement===last){event.preventDefault();first.focus();} }} role="dialog" aria-modal="true" aria-labelledby="cloud-title" className="cloud-dialog glass">
       <h2 id="cloud-title">{state.phase==='migration'?'Tu progreso, en todos tus dispositivos':state.phase==='conflict'?'Revisemos estos cambios':labels[state.phase]}</h2>
       {state.phase==='migration' ? <>

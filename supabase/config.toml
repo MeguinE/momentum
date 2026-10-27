@@ -4,6 +4,9 @@ project_id = "momentum"
 [auth]
 site_url = "https://momentum-blond-tau.vercel.app"
 additional_redirect_urls = [
+  "https://momentum-blond-tau.vercel.app/profile",
+  "http://localhost:4321/profile",
+  "http://127.0.0.1:4321/profile",
   "https://momentum-blond-tau.vercel.app/settings",
   "http://localhost:4321/settings",
   "http://127.0.0.1:4321/settings",
