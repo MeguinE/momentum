@@ -32,8 +32,6 @@ function suspendAccount() {
   generation++;
   releaseAccountLock();
   syncing = false;
-  $dataReady.set(false);
-  state('loading');
 }
 function checkpoint() {
   if (!userId || !cache) return;
@@ -79,6 +77,8 @@ export function startCloud() {
     window.addEventListener('pagehide', suspendAccount);
     window.addEventListener('pageshow', event => {
       if (!event.persisted || !userId) return;
+      $dataReady.set(false);
+      state('loading');
       accountInitialized = false;
       void switchAccount(userId,$cloud.get().email);
     });

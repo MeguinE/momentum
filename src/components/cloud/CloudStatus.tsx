@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { Cloud, CloudOff, RefreshCw } from 'lucide-react';
 import { $dataReady } from '../../lib/stores/habitsStore';
@@ -6,17 +6,23 @@ import { $cloud, startCloud, retryConnection, beginAccount, resolveConflict, dow
 const labels:Record<string,string> = {local:'Solo en este navegador',loading:'Conectando…',ready:'Sincronizado',pending:'Cambios pendientes',syncing:'Sincronizando…',offline:'Sin conexión · pendiente',error:'Revisar sincronización',migration:'Vincular progreso',conflict:'Resolver cambios',locked:'Otra pestaña abierta'};
 export default function CloudStatus() {
   const state = useStore($cloud), ready = useStore($dataReady);
+  const [showOverlay,setShowOverlay] = useState(false);
   const dialog = useRef<HTMLElement>(null);
   useEffect(startCloud,[]);
   useEffect(() => {
+    if (ready) { setShowOverlay(false); return; }
+    const timer = window.setTimeout(() => setShowOverlay(true),200);
+    return () => window.clearTimeout(timer);
+  },[ready]);
+  useEffect(() => {
     const background = document.querySelectorAll<HTMLElement>('main, .sidebar');
     background.forEach(element => { element.inert = !ready; });
-    if (!ready) dialog.current?.focus();
+    if (showOverlay) dialog.current?.focus();
     return () => background.forEach(element => { element.inert = false; });
-  },[ready,state.phase]);
+  },[ready,showOverlay,state.phase]);
   return <>
     <a className="cloud-badge" href="/profile#account" title={state.message ?? labels[state.phase]}>{state.phase==='offline'?<CloudOff size={15}/>:<Cloud size={15}/>}<span>{labels[state.phase]}</span></a>
-    {!ready && <div className="cloud-overlay"><section ref={dialog} tabIndex={-1} onKeyDown={event=>{ if(event.key!=='Tab')return; const buttons=dialog.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)'); if(!buttons?.length)return; const first=buttons[0],last=buttons[buttons.length-1]; if(event.shiftKey && (document.activeElement===first || document.activeElement===dialog.current)){event.preventDefault();last.focus();}else if(!event.shiftKey && document.activeElement===last){event.preventDefault();first.focus();} }} role="dialog" aria-modal="true" aria-labelledby="cloud-title" className="cloud-dialog glass">
+    {!ready && showOverlay && <div className="cloud-overlay"><section ref={dialog} tabIndex={-1} onKeyDown={event=>{ if(event.key!=='Tab')return; const buttons=dialog.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)'); if(!buttons?.length)return; const first=buttons[0],last=buttons[buttons.length-1]; if(event.shiftKey && (document.activeElement===first || document.activeElement===dialog.current)){event.preventDefault();last.focus();}else if(!event.shiftKey && document.activeElement===last){event.preventDefault();first.focus();} }} role="dialog" aria-modal="true" aria-labelledby="cloud-title" className="cloud-dialog glass">
       <h2 id="cloud-title">{state.phase==='migration'?'Tu progreso, en todos tus dispositivos':state.phase==='conflict'?'Revisemos estos cambios':labels[state.phase]}</h2>
       {state.phase==='migration' ? <>
         <p>Esta cuenta aún no tiene progreso en la nube. Puedes llevar tus hábitos, registros y rutas de este navegador, o empezar con los hábitos base. La copia original del navegador se conserva.</p>
