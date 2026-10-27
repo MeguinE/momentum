@@ -31,9 +31,9 @@ Completar módulos documenta tu autoevaluación; no certifica un nivel ni suma m
 ## Vincular celular y laptop
 
 1. Abre **Mi perfil** desde el avatar de la barra superior o el acceso de la barra lateral.
-2. En el navegador que contiene tu progreso actual, escribe tu correo y abre el enlace recibido en ese mismo navegador.
+2. En el navegador que contiene tu progreso actual, elige **Continuar con Google** o solicita un enlace por correo.
 3. Si tu cuenta aún está vacía, elige **Vincular mi progreso actual**.
-4. En el otro dispositivo, entra con **el mismo correo**.
+4. En el otro dispositivo, entra con **la misma cuenta o el mismo correo**.
 5. Usa **Cargar y sincronizar** para recuperar avances de la nube y enviar cambios pendientes. La sincronización también ocurre automáticamente.
 
 El indicador superior muestra si estás en modo local, sincronizando, sin conexión o al día. Espera **Sincronizado** antes de cerrar si acabas de registrar algo.

@@ -5,9 +5,9 @@ Aplicación: https://momentum-blond-tau.vercel.app
 
 ## Usarlo
 1. En el navegador donde tienes tu progreso actual, abre Mi perfil → Cuenta y sincronización.
-2. Escribe tu correo y abre el enlace recibido en ese mismo navegador.
+2. Elige **Continuar con Google** o solicita un enlace por correo y ábrelo en ese mismo navegador.
 3. Si la cuenta está vacía, elige **Vincular mi progreso actual**.
-4. En el otro dispositivo, abre Mi perfil y entra con el mismo correo. Cargará el progreso de la cuenta.
+4. En el otro dispositivo, abre Mi perfil y entra con la misma cuenta. Cargará el progreso asociado.
 5. Puedes usar **Cargar y sincronizar** desde Mi perfil para recuperar y enviar avances. Espera el indicador **Sincronizado** antes de cerrar cuando acabes de registrar algo.
 
 La copia local original se conserva. Iniciar sesión en una cuenta existente carga los datos de esa cuenta; no mezcla automáticamente los hábitos base de un dispositivo nuevo. Si ya tenías progreso distinto en dos dispositivos, exporta ambos respaldos antes de vincularlos. Importar un respaldo en una sesión abierta reemplaza el documento de la cuenta y se sincroniza.
@@ -18,7 +18,9 @@ La copia local original se conserva. Iniciar sesión en una cuenta existente car
 - Nunca incluir `service_role`, claves `sb_secret_`, contraseñas ni tokens de la CLI en el código, Vercel público o Git.
 - Migraciones: `npx supabase db push --linked`.
 - Revisar configuración antes de aplicarla: `npx supabase config diff`; aplicar: `npx supabase config push`. El archivo administra únicamente las URL de autenticación.
-- El acceso usa enlaces de correo de Supabase Auth. El servicio de correo predeterminado de Supabase tiene límites y restricciones; para usuarios ajenos al equipo del proyecto configura SMTP propio. Ver https://supabase.com/docs/guides/auth/auth-smtp.
+- El acceso con Google requiere habilitar el proveedor en Supabase Authentication → Providers → Google. En el cliente OAuth web de Google configura `https://vmqyundwumsvsvynvsva.supabase.co/auth/v1/callback` como URI de redirección autorizada y guarda el Client ID y Client Secret únicamente en Supabase; nunca en Git ni en variables `PUBLIC_`.
+- Supabase enlaza automáticamente Google con una identidad existente que tenga el mismo correo verificado, conservando el mismo progreso.
+- El acceso alternativo usa enlaces de correo de Supabase Auth. El servicio de correo predeterminado tiene límites y restricciones; para usuarios ajenos al equipo del proyecto configura SMTP propio. Ver https://supabase.com/docs/guides/auth/auth-smtp.
 
 ## Cómo se conserva el progreso
 Una fila por usuario contiene hábitos, historial y las notas/marcas de aprendizaje. RLS limita las lecturas al dueño; las escrituras se realizan mediante una función que toma el usuario de la sesión, nunca del navegador, y comprueba una revisión atómica.
